@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><server description="new server">
+
+  <!-- Enable features -->
+  <featureManager>
+    <feature>jaxws-2.2</feature>
+    <feature>jdbc-4.0</feature>
+    <feature>jsp-2.3</feature>
+    <feature>passwordUtilities-1.0</feature>
+    <feature>restConnector-2.0</feature>
+    <feature>sessionDatabase-1.0</feature>
+    <feature>servlet-4.0</feature>
+    <feature>springBoot-2.0</feature>
+    <feature>transportSecurity-1.0</feature>
+    <feature>webSocket-1.1</feature>
+    <feature>ssl-1.0</feature>
+  </featureManager>
+
+  <!-- Includes -->
+  <include location="${shared.config.dir}/http_plugin.xml"/>
+  <include location="${shared.config.dir}/message_logging.xml"/>
+  <include location="${shared.config.dir}/sessiondb.xml"/>
+
+  <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+  <httpEndpoint host="as400a.wpac.com"
+                id="defaultHttpEndpoint"
+                protocolVersion="http/1.1"
+                httpPort="-1"
+                httpsPort="20110">
+    <accessLogging
+            filepath="${server.output.dir}/logs/http_access.log"
+            logFormat='%h %D %u %t "%r" %s %b'
+            maxFileSize="10"
+            maxFiles="5"/>
+    <sslOptions sslRef="SSLSettingsByWebAdmin"/>
+  </httpEndpoint>
+
+  <!-- SSL configuration -->
+  <sslDefault sslRef="SSLSettingsByWebAdmin"/>
+  <keyStore id="KeyStoreByWebAdmin" location="/QIBM/USERDATA/ICSS/CERT/Server/DEFAULT.KDB" password="{xor}ZmsRNTVrNDAvEQ==" provider="IBMi5OSJSSEProvider" type="IBMi5OSKeyStore"/>
+  <ssl id="SSLSettingsByWebAdmin" keyStoreRef="KeyStoreByWebAdmin" serverKeyAlias="wpac.com Wildcard Fixed" sslProtocol="TLSv1.2" trustStoreRef="KeyStoreByWebAdmin"/>
+
+  <!-- Automatically expand WAR files and EAR files -->
+  <applicationManager autoExpand="true"/>
+
+  <!-- Application Monitor -->
+  <applicationMonitor dropins="${shared.app.dir}" pollingRate="600000ms"/>
+
+  <!-- Defines the properties of a Spring Boot application -->
+  <springBootApplication id="SpeedDIAL_PRO" location="${shared.app.dir}/speeddialpro.war" name="SpeedDIAL_PRO">
+        <applicationArgument>--server.context-path=/speeddialpro</applicationArgument>
+    </springBootApplication>
+
+
+</server>          
