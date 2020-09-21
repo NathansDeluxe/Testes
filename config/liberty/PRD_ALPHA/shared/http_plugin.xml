@@ -1,0 +1,11 @@
+<server description="HTTP plugin configuration">
+
+    <pluginConfiguration
+        pluginInstallRoot="/qibm/userdata/websphere/Liberty/SDPRO/PRD_ALPHA/wlp/output/servers"
+        webserverName="SDPROHTTPA" webserverPort="20101" webserverSecurePort="20100"
+        sslKeyringLocation="${pluginInstallRoot}/plugin-key.kdb"
+        sslStashfileLocation="${pluginInstallRoot}/plugin-key.sth"
+        logDirLocation="${pluginInstallRoot}">
+    </pluginConfiguration>
+
+</server>
